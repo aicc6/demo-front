@@ -1,33 +1,65 @@
 import js from '@eslint/js'
+import pluginImport from 'eslint-plugin-import'
+import pluginJsxA11y from 'eslint-plugin-jsx-a11y'
+import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
+import pluginReact from 'eslint-plugin-react'
+import pluginReactHooks from 'eslint-plugin-react-hooks'
+import pluginReactRefresh from 'eslint-plugin-react-refresh'
+import pluginUnusedImports from 'eslint-plugin-unused-imports'
 import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
 
 export default [
   { ignores: ['dist'] },
+  js.configs.recommended,
+  pluginJsxA11y.flatConfigs.recommended,
+  pluginReact.configs.flat.recommended,
+  pluginReact.configs.flat['jsx-runtime'],
+  pluginReactHooks.configs['recommended-latest'],
+  pluginReactRefresh.configs.recommended,
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        ecmaFeatures: { jsx: true },
-        sourceType: 'module',
+      globals: {
+        ...globals.browser,
+        React: 'readonly', // React 프로젝트인 경우
+      },
+    },
+    settings: {
+      react: {
+        version: 'detect',
       },
     },
     plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      'unused-imports': pluginUnusedImports,
+      import: pluginImport,
     },
     rules: {
-      ...js.configs.recommended.rules,
-      ...reactHooks.configs.recommended.rules,
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
-      'react-refresh/only-export-components': [
+      'no-unused-vars': 'off',
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
         'warn',
-        { allowConstantExport: true },
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+        },
+      ],
+      'import/order': [
+        'error',
+        {
+          // "builtin" | "external" | "internal" | "unknown" | "parent" | "sibling" | "index" | "object" | "type"
+          groups: ['builtin', 'external', 'parent', 'sibling', 'index'],
+          'newlines-between': 'always',
+          alphabetize: {
+            order: 'asc',
+            orderImportKind: 'asc',
+            caseInsensitive: true,
+          },
+          warnOnUnassignedImports: true,
+        },
       ],
     },
   },
+  pluginPrettierRecommended,
 ]
