@@ -45,20 +45,7 @@ export default [
           argsIgnorePattern: '^_',
         },
       ],
-      'import/order': [
-        'error',
-        {
-          // "builtin" | "external" | "internal" | "unknown" | "parent" | "sibling" | "index" | "object" | "type"
-          groups: ['builtin', 'external', 'parent', 'sibling', 'index'],
-          'newlines-between': 'always',
-          alphabetize: {
-            order: 'asc',
-            orderImportKind: 'asc',
-            caseInsensitive: true,
-          },
-          warnOnUnassignedImports: true,
-        },
-      ],
+      'react/prop-types': 'off',
     },
   },
   pluginPrettierRecommended,
