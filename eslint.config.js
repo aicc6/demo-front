@@ -17,7 +17,7 @@ export default [
   pluginReactHooks.configs['recommended-latest'],
   pluginReactRefresh.configs.recommended,
   {
-    files: ['**/*.{js,jsx}'],
+    files: ['**/*.{js,jsx,css,html,json}'],
     languageOptions: {
       globals: {
         ...globals.browser,
