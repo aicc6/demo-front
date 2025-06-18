@@ -5,5 +5,3 @@ const App = () => {
 }
 
 export default App
-
-// 123123
